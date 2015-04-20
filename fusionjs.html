@@ -1,0 +1,40 @@
+<!--
+
+This code was used on the streams page http://teamfusion.gg/streams
+to pull data from Twitch.tv and update the webpage every half second
+with new data.
+
+-->
+
+<li class="hidden stream clearfix '.$title.'"> 
+<script>			
+	interval'.$title.' = setInterval(function(){			
+	$.ajax({
+	type: "GET",
+	url: "https://api.twitch.tv/kraken/streams/'.$title.'?jsonp=parseResponse", 
+	async: true, 
+	dataType: "jsonp", 
+	success: function(data){ 
+	clearInterval(interval'.$title.'); 	
+	if (data["stream"] == null) return; 					
+	$(".'.$title.'").removeClass("hidden"); 
+	var channelTitle = data["stream"]["channel"]["display_name"]; 
+	var streamTitle = data["stream"]["channel"]["status"]; 
+	var currentGame = data["stream"]["channel"]["game"]; 
+	var viewers = data["stream"]["viewers"]; 
+	var preview = data["stream"]["preview"]["medium"]; 
+	$(".'.$title.'").addClass("streaming"); 					
+
+	if(x==0){
+		$(".streams-hero").html("<object type=\"application/x-shockwave-flash\" height=\"563\" width=\"1000\" id=\"live_embed_player_flash\" data=\"http://www.twitch.tv/widgets/live_embed_player.swf?channel="+channelTitle+"\" bgcolor=\"#000000\"><param name=\"allowFullScreen\" value=\"true\" /><param name=\"allowScriptAccess\" value=\"always\" /><param name=\"allowNetworking\" value=\"all\" /><param name=\"movie\" value=\"http://www.twitch.tv/widgets/live_embed_player.swf\" /><param name=\"flashvars\" value=\"hostname=www.twitch.tv&channel="+channelTitle+"&auto_play=true&start_volume=25\" /></object><a href=\"http://www.twitch.tv//"+channelTitle+"\" class=\"trk\" style=\"padding:2px 0px 4px; display:block; width:345px; font-weight:normal; font-size:10px; text-decoration:underline; text-align:center;\"></a>");						 
+		x=1;
+	}      
+	$(".'.$title.'").html("<div class=load>LOAD STREAM</div><div class=online>ONLINE</div><img class=preview src="+preview+"/><h4 class=chantitle>"+channelTitle+"</h4>"); 					
+	
+	x=x+1; 
+	} 					
+	}); 
+	},500); 
+					
+</script> 
+</li> 
